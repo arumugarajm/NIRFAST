@@ -1,0 +1,7 @@
+clear; clc; close all;
+load('C:\Users\arumugaraj\Desktop\d1.mat');
+img1=(volimage(:,:,:));
+
+imwrite(imgstack(:,:,1),'multipage.tif') % write the first image
+imwrite(imgstack(:,:,2),'multipage.tif','writemode','append') % append the second image
+readbackimgstack = cat(3,imread('multipage.tif',1),imread('multipage.tif',2)); % read back both and concatenate

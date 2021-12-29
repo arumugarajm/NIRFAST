@@ -1,0 +1,47 @@
+Mesh Creation
+For advanced segmentation of medical images, Nirview has been developed and is available at nirfast.org.
+
+Nirfast has several tools for creating meshes. These can be accessed via the Mesh->Create Mesh menu. Each method will first create the geometry, then allow you to place the sources and detectors, and finally optimize the mesh for Nirfast.
+
+Simple Shapes
+The following simple shapes can be created quickly and easily: * Circle * Rectangle * Sphere * Cylinder * Slab
+
+These require only size inputs and a location for the mesh output.
+
+from 2D Mask
+A 2D mesh can be created from a 2D mask. The required inputs are: * bmp file - the 2D mask * a location for the mesh output * pixel spacing - the size of a single pixel in mm, referred to as the pixel spacing in a DICOM * edge size - the size of the edges used for the boundary of the mesh * desired triangle area - the desired area for each triangle inside the mesh
+
+from 3D Mask
+A 3D mesh can be created from a 3D mask. The required inputs are: * bmp file or Matlab matrix - either a stack of equally sized bmp files (just select one of them), or a 3D matrix in Matlab; if you are using bitmaps, they must all be numbered with the same prefix, such as myimage1.bmp, myimage2.bmp, etc. * a location for the mesh output * edge size - the size of the edges used for the boundary of the mesh * X/Y pixel spacing - the size of a single pixel in mm, referred to as the pixel spacing in a DICOM * slice thickness - the distance between slices in mm, referred to as the slice thickness in a DICOM
+
+from 3D Surface(s)
+A 3D mesh can be created from one or more 3D surfaces. The required inputs are: * inp or node/ele - either any number of inp (Abaqus) files (just select one of them), or a single node and ele file (select the ele file); if you are using multiple inp files, they must all be numbered with the same prefix, such as mysurf1.inp, mysurf2.inp, etc. The format of these file types is described later. * a location for the mesh output
+
+from 3D Volume
+A 3D mesh can be created from a list of the nodes and elements in a 3D volume. The required inputs are: * node/ele - a single node and ele file (select the ele file). The format of these is described later. * a location for the mesh output
+
+Formats
+bmp
+bmp refers to the bitmap file format used for storing 2D images.
+
+inp
+inp refers to the Abaqus format for storing the node and element information of a mesh. For Nirfast, the inp file format is used only for 3D surfaces. Here is an example:
+
+``` *HEADING This is my example
+
+*NODE 1, 112.385, 152.639, 42.6071 2, 171.974, 163.209, 42.6149 3, 113.667, 148.462, 42.6287 4, 167.528, 167.085, 42.6297 ... *ELEMENT, TYPE=S3R 1, 69, 56, 109 2, 56, 85, 109 3, 109, 112, 69 4, 68, 69, 112 ... *ELSET, ELSET=f_Surface 1 2 3 4 ... ```
+
+In this example, the node coordinates are in columns 2-4 of the NODE section. The elements are defined by columns 2-4 of the ELEMENT section. The ELSET section simply says which elements are surface elements. So for the purposes of Nirfast the ELSET section should list every element number, since we are defining a surface.
+
+node/ele
+This format specifies the node coordinates in a node file and the element coordinates in a ele file (for instance, mymesh.node and mymesh.ele). Here is an example of a node file:
+
+12695 3 0 0 1 0 -43 -30 2 3 -42.8 -30 3 6 -42.5 -30 4 9 -42 -30 ...
+
+The first line says how many nodes there are, how many coordinates each node has, and then two zeros (number of attributes and number of boundary markers). The rest of the file lists the node coordinates in columns 2-4. Column 1 is the node numbering.
+
+Here is an example of a ele file:
+
+63810 4 0 1 7928 8934 12014 12015 2 12449 3668 4848 12015 3 1506 5034 1562 5339 4 11372 7334 7253 7286 ...
+
+The first line says how many elements there are, how many nodes each element has, and then a zero (number of attributes). The rest of the file lists the nodes in each element in columns 2-5. Column 1 is the element numbering.

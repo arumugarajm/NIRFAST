@@ -1,0 +1,175 @@
+Mesh
+Nirfast loads a mesh from 7 input files. They all have the same prefix.
+For example: mymesh.node, mymesh.elem, etc.
+
+
+.node
+The node file contains the 3D locations of the nodes. These locations are in units of mm.
+For a 2D mesh, the last column will be zeros.
+
+
+1st column – flag of either 0 (internal node) or 1 (boundary node)
+2nd column – x coordinate of each node
+3rd column – y coordinate of each node
+4th column – z coordinate of each node
+.elem
+The elem file contains the element connectivity list. Each row contains the numbers of the nodes that make up an element. Nodes are numbered based on the node file, starting at node 1.
+In 2D this is an Mx3 matrix (3 nodes make one triangle), where M is the total number of elements.
+In 3D this is an Mx4 matrix (4 nodes make one tetrahedron), where M is the total number of elements.
+
+Note: BEM meshes use triangles rather than tetrahedral.
+
+
+.param
+The param file contains the model type and the optical or chromophore properties.
+
+Standard
+
+The first line in this file is the mesh type, ‘stnd’. Then there follows and Nx3 matrix, where N is the total number of nodes.
+
+
+1st column – absorption coefficient of each node
+2nd column – diffusion coefficient of each node
+3rd column – refractive index of each node
+Fluorescence
+
+The first line in this file is the mesh type, ‘fluor’. Then there follows an Nx8 matrix, where N is the total number of nodes.
+
+
+1st column – absorption coefficient at excitation wavelength
+2nd column – diffusion coefficient at excitation wavelength
+3rd column – refractive index
+4th column – absorption coefficient at emission wavelength
+5th column – diffusion coefficient at emission wavelength
+6th column – fluorophore absorption
+7th column – quantum yield of the fluorophore
+8th column – half-life of the fluorophore
+Spectral
+
+The first line in this file is the mesh type, ‘spec’. Then follows, on each line, the name of each chromophore. If you wish to use a chromophore other than ‘HbO’, ‘deoxyHb’, ‘Water’, ‘S-Amplitude’ (Scatter Amplitude), and ‘S-Power’ (Scatter Power), you will have to create a .excoef file. Nirfast comes with a standard .excoef file, called exceof.txt. See this file for the format. Then follows the concentrations of the chromophores at each node.
+
+Example:
+
+
+spec HbO deoxyHb Water S-Amplitude S-Power 0.01 0.01 0.4 1 1 0.01 0.01 0.4 1 1 0.01 0.01 0.4 1 1 ... ... ... ... ...
+Spectral Emission
+
+Use the Spectral mesh format with the drug as one of the chromophores.
+
+SPN
+
+The first line in this file is the mesh type, ‘stnd_spn’. Then follows an Nx3 matrix, where N is the total number of nodes.
+
+
+1st column – absorption coefficient
+2nd column – scatter coefficient
+3rd column – anisotropy factor (between 0 and 1)
+4th column – refractive index
+BEM Standard
+
+The first line of this file is the mesh type, ‘stnd_bem’. Then follows an Nx3 matrix, where N is the number of regions.
+
+
+1st column – absorption coefficient
+2nd column – diffusion coefficient
+3rd column – refractive index
+BEM Fluorescence
+
+The first line in this file is the mesh type, ‘fluor_bem’. Then there follows an Nx8 matrix, where N is the number of regions.
+
+
+1st column – absorption coefficient at excitation wavelength
+2nd column – diffusion coefficient at excitation wavelength
+3rd column – refractive index
+4th column – absorption coefficient at emission wavelength
+5th column – diffusion coefficient at emission wavelength
+6th column – fluorophore absorption
+7th column – quantum yield of the fluorophore
+8th column – half-life of the fluorophore
+BEM Spectral
+
+The first line in this file is the mesh type, ‘spec_bem’. Then follows, on each line, the name of each chromophore. If you wish to use a chromophore other than ‘HbO’, ‘deoxyHb’, ‘Water’, ‘S-Amplitude’ (Scatter Amplitude), and ‘S-Power’ (Scatter Power), you will have to create a .excoef file. Nirfast comes with a standard .excoef file, called exceof.txt. See this file for the format. Then follows the concentrations of the chromophores at each region.
+
+Example:
+
+
+spec_bem HbO deoxyHb Water S-Amplitude S-Power 0.01 0.01 0.4 1 1 0.02 0.01 0.4 1 1
+.source
+The source file contains the coordinates of each optical source. The sources need to be assigned as near to the external boundary as possible. During mesh load-up, Nirfast automatically moves the sources inside the mesh by one scattering distance. If you prefer to specify the final source locations manually, use ‘fixed’ as the first line of this file.
+For a 2D mesh, this will be an Nx3 matrix, where N is the number of sources.
+For a 3D mesh, this will be an Nx4 matrix, where N is the number of sources.
+
+
+1st column – the numbers (labels) of the sources
+2nd column – x coordinate of the sources
+3rd column – y coordinate of the sources
+4th column – z coordinate of the sources
+Example:
+
+
+fixed num x y 3 41.1885 -8.19295 2 34.9146 -23.3293 1 23.3276 -34.9121 4 8.19192 -41.1834
+Optionally, if you put 'distributed' (no quotes) at the top of the source file, it will treat the sources as one distribution.
+
+
+
+.meas
+The meas file contains the coordinates of each optical detector. The detectors need to be assigned as near to the external boundary as possible. During mesh load-up, Nirfast automatically moves the detectors onto the boundary. If you prefer to specify the final detector locations manually, use ‘fixed’ as the first line of this file.
+For a 2D mesh, this will be an Nx3 matrix, where N is the number of detectors.
+For a 3D mesh, this will be an Nx4 matrix, where N is the number of detectors.
+
+
+1st column – the numbers (labels) of the detectors
+2nd column – x coordinate of the detectors
+3rd column – y coordinate of the detectors
+4th column – z coordinate of the detectors
+Example:
+
+
+num x y 3 41.1885 -8.19295 2 34.9146 -23.3293 1 23.3276 -34.9121 4 8.19192 -41.1834
+.link
+The link file describes the linking protocol for the sources/detectors. It is optional (needed if you run the forward solver or Jacobian functions).
+
+
+1st column – source number
+2nd column – detector number
+3rd column – flag (0 or 1) signaling whether or not to use the source/detector pair
+Example:
+
+
+sourcedetectoractive 2 3 1 2 4 1 4 1 0 4 2 1 4 3 1
+.region
+For each node, a numeric label can be assigned. This is an Nx1 matrix, where N is the number of nodes.
+
+For BEM meshes, the region file is an Nx2 matrix, where N is the number of elements. Each row describes which two regions a given element is on the boundary of (region 0 means to external boundary). The 1st column indicates the outer region for a particular element, and the 2nd column indicates the interior region. The exception to this is for elements in the outer-most region, which will have 1 in the 1st column and 0 in the 2nd column.
+
+
+Data
+All data is stored in a single .paa file.
+
+
+Standard
+Standard single wavelength data is stored in an Nx5 matrix, where N is the number of measurements.
+
+
+1st column – source number
+2nd column – detector number
+3rd column – flag (0 or 1) signaling whether or not to use the source/detector pair
+4th column – amplitude values
+5th column – phase values
+Example:
+
+
+source det active amplitude phase 1 2 1 0.00303828 27.5337 1 3 1 0.000108182 47.6435 1 4 1 7.84477e-006 66.6764 1 5 1 8.45395e-007 83.9663
+Fluorescence
+Fluorescence data should have whichever of the following labels are appropriate on the first line: xamplitude, xphase, flamplitude, flphase, mmamplitude, and mmphase (these represent excitation amplitude, excitation phase, fluorescence amplitude, fluorescence phase, emission amplitude, and emission phase respectively). Then follow the corresponding amplitude and phase columns.
+
+Example:
+
+
+source det active xphase xamplitude flphase flamplitude mmphase mmamplitude 1 2 1 0 0.00212301 0 7.57358e-005 0 0.00336323 1 3 1 0 6.20946e-005 0 6.05683e-006 0 0.000159775
+Spectral
+Spectral data should have wavelength labels on the first line, followed by the corresponding amplitude and phase columns.
+
+Example:
+
+source det w661 w735 w761 1 2 1 0.0013 32.267 1 0.0036 37.41 1 0.00312 34.66 1 3 1 2.6e-005 57.72 1 0.0001 69.08 1 0.0001 63.09

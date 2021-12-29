@@ -5,7 +5,7 @@ Open Matlab, and go to File -> Set Path -> Add With Subfolders
 Select the Nirfast folder, then Save and Close
 
 ##NIRFASTSlicer installation (Ubuntu)
-Download Nirfast from http://www.nirfast.org
+Download Nirfastslicer from http://www.nirfast.org
 Unzip Nirfastslicer onto your computer
-Open unzip file and right click the mouse and select open in terminal option
+Open unzipped file and right click the mouse in that directory and select open in terminal option
 In terminal window type ./NIRFASTSlicer and then enter

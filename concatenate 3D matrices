@@ -1,0 +1,5 @@
+a = load('C:\Users\arumugaraj\Desktop\d.mat');
+a1 = a.volimage;
+a2 = a1(:,:,1:376);
+a3 = a1(:,:,377:end);
+a4 = cat(3,a2,a3); % concatenate third dimension on 3D matrices

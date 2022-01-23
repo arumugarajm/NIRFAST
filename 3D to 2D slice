@@ -1,0 +1,14 @@
+L = load('D:\3D\rat data\X.mat');
+O = L.Xi;
+O1 = L.Xgt;
+O2 = L.Xf;
+O3 = L.sdn;
+
+for i=1:44
+    Xi = O(:,:,i);
+    Xgt = O1(:,:,i);
+    Xf = O2(:,:,i);
+    sdn = O3;
+    
+    save(['D:\3D\rat data\X_' num2str(i) '.mat'],'Xgt','Xi','Xf', 'sdn');
+end

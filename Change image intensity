@@ -1,0 +1,30 @@
+a = load('C:\Users\arumugaraj\Desktop\47.mat');
+b = a.volimage;
+b = imresize3(b,[64 64 64]);
+c = cast(b,'double');
+
+MyImage = c;
+NewImage = zeros(size(MyImage));
+[row,column,depth]=size(MyImage);
+ for d=1:depth
+    for r=1:row 
+        for c=1:column
+           if  MyImage(r,c,d) == 0
+               NewImage(r,c,d)=0.005;
+           elseif MyImage(r,c,d) == 1
+               NewImage(r,c,d)=0.015;
+           elseif MyImage(r,c,d) == 2
+               NewImage(r,c,d)=0.04;
+           elseif MyImage(r,c,d)==3
+               NewImage(r,c,d)=0.02;
+           elseif MyImage(r,c,d)==4
+               NewImage(r,c,d)=0.025;
+           elseif MyImage(r,c,d)==5
+               NewImage(r,c,d)=0.03;
+           else
+               NewImage(r,c,d)=MyImage(r,c,d);
+               
+           end
+        end 
+    end
+ end

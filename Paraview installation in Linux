@@ -1,0 +1,6 @@
+# Installation
+sudo apt-get update
+sudo apt-get install paraview
+# To open
+press Alt+F2 (Run command)
+type paraview and press enter

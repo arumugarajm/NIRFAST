@@ -1,4 +1,4 @@
-# Installation
+# Installation (Type below commnd in command prompt)
 sudo apt-get update
 sudo apt-get install paraview
 # To open

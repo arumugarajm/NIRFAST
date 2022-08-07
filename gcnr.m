@@ -1,6 +1,7 @@
 clear all;
 close all;
 
+% Read all the results as a mat file
 A = load('/media/fistlab/raj/2Dlineprofile/unet.mat');
 B = load('/media/fistlab/raj/2Dlineprofile/FDUnet.mat');
 C = load('/media/fistlab/raj/2Dlineprofile/Ynet.mat');
@@ -8,19 +9,9 @@ D = load('/media/fistlab/raj/2Dlineprofile/FDYnet.mat');
 E = load('/media/fistlab/raj/2Dlineprofile/resnet.mat');
 F = load('/media/fistlab/raj/2Dlineprofile/gan.mat');
 a = B.P1;
-% b = C.o5;
-
-% figure; imshow(a,[]);
-% figure; imshow(b,[]);
-
-% ac = a(135:203, 210:230, :);
-% ac = a(201:240, 130:200, :);
-% figure; imshow(ac,[]);
-% bc = a(71:110, 160:230, :);
 
 ac = a(167:187, 55:57, :); %Selecting foreground region
 figure; imshow(ac,[]);
-% bc = a(2:92, 205:214, :);
 
 bc = a(82:102, 205:207, :); %Selectong background region
 figure; imshow(bc,[]);
